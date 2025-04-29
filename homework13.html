@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #example-clock-container {
+        width: 100%;
+        height: 600px;
+        margin: 0 auto;
+        display: table;
+        vertical-align: middle;
+        background-image: url(https://fgo.kazemai.io/Asset/JP/CharaGraph/9303400/9303400a.png);
+        background-size: cover;
+        background-position: center 15%;
+        overflow: hidden;
+      }
+
+      #example-clock-content {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: table;
+        vertical-align: middle;
+        display: table-cell;
+        animation: light 14s linear infinite;
+      }
+
+      #example-clock-main {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        position: relative;
+        background: transparent;
+        border: white 5px solid;
+        filter: drop-shadow(0px 0px 5px #ff0);
+        vertical-align: middle;
+        margin: 0 auto;
+      }
+
+      #example-clock-hour {
+        position: absolute;
+        top: calc(50% - 5px);
+        width: 25%;
+        height: 10px;
+        background: #fff;
+        transform-origin: right center;
+        transform: rotate(0deg);
+        left: 25%;
+        border-radius: 10px;
+      }
+
+      #example-clock-minute {
+        position: absolute;
+        top: calc(50% - 3px);
+        width: 35%;
+        height: 6px;
+        background: #a0a;
+        transform-origin: right center;
+        transform: rotate(0deg);
+        left: 15%;
+        border-radius: 20px;
+      }
+
+      #example-clock-second {
+        position: absolute;
+        top: calc(50% - 1px);
+        width: 45%;
+        height: 2px;
+        background: #f00;
+        transform-origin: right center;
+        transform: rotate(0deg);
+        left: 5%;
+        border-radius: 30px;
+      }
+      /* width + left = 50% 可以確保指針在正確位置 */
+      /* top 對應指針中心點 */
+
+      #example-clock-dot {
+        position: absolute;
+        top: calc(50% - 5px);
+        left: calc(50% - 5px);
+        width: 10px;
+        height: 10px;
+        background: rgba(0, 0, 0, 1);
+        border-radius: 50%;
+      }
+
+      #example-clock-time {
+        text-align: center;
+        margin: 20px auto;
+        font-size: 30px;
+        color: #fff;
+        font-family: "Orbitron";
+      }
+
+      @keyframes light {
+        from {
+          filter: drop-shadow(0px 0px 10px #f00);
+        }
+        /* 1/7 142857 */
+        /* 2/7 285714 左到右 2個 or 右到左 4個 */
+        /* 3/7 428571 左到右 1個 or 右到左 5個 */
+        /* 4/7 571428 左到右 4個 or 右到左 2個 */
+        /* 5/7 714285 左到右 5個 or 右到左 1個 */
+        /* 6/7 857142 左到右 3個 or 右到左 3個 */
+
+        14% {
+          filter: drop-shadow(0px 0px 10px #f80);
+        }
+
+        29% {
+          filter: drop-shadow(0px 0px 10px #ff0);
+        }
+
+        43% {
+          filter: drop-shadow(0px 0px 10px #0f0);
+        }
+
+        57% {
+          filter: drop-shadow(0px 0px 10px #0ff);
+        }
+
+        71% {
+          filter: drop-shadow(0px 0px 10px #00f);
+        }
+
+        86% {
+          filter: drop-shadow(0px 0px 10px #808);
+        }
+
+        to {
+          filter: drop-shadow(0px 0px 10px #f00);
+        }
+      }
+
+      .clock {
+        width: 33px;
+
+        /* background-color: #00f; */
+      }
+    </style>
+  </head>
+
+  <body>
+    <link
+      href="https://fonts.googleapis.com/css?family=Orbitron"
+      rel="stylesheet"
+    />
+    <div id="example-clock-container">
+      <div id="example-clock-content">
+        <div id="example-clock-main">
+          <!-- 傳統時鐘 -->
+          <div id="example-clock-hour"></div>
+          <div id="example-clock-minute"></div>
+          <div id="example-clock-second"></div>
+          <div id="example-clock-dot"></div>
+        </div>
+        <div id="example-clock-time">
+          <!-- 數字時鐘 -->
+          西元<span id="example-clock-time-year"></span>年&nbsp;
+          <span id="example-clock-time-month"></span>月&nbsp;
+          <span id="example-clock-time-date"></span>日&nbsp; <br />
+          星期<span id="example-clock-time-day"></span>&nbsp;<br />
+          <span id="example-clock-time-hour"></span>：
+          <span id="example-clock-time-minute"></span>：
+          <span id="example-clock-time-second"></span>
+          <!-- 年、月、日、星期、時、分、秒 -->
+        </div>
+      </div>
+    </div>
+
+    <h1>設定鬧鐘</h1>
+    <input
+      type="number"
+      value="8"
+      min="0"
+      max="23"
+      class="clock"
+      id="numberH"
+    />時
+    <input
+      type="number"
+      value="10"
+      min="0"
+      max="59"
+      class="clock"
+      id="numberM"
+    />分
+    <input
+      type="number"
+      value="0"
+      min="0"
+      max="59"
+      class="clock"
+      id="numberS"
+    />秒
+    <input type="button" value="設定" id="setTime1" />
+    <br />
+    <input type="time" value="12:00" id="timeT" />
+    <input type="button" value="設定" id="setTime2" />
+    <!-- <input type="submit" value="確定" /> -->
+
+    <br />
+
+    <h2>設定的時間</h2>
+    <ul>
+      <li id="setTimeDisplay"></li>
+    </ul>
+
+    <script>
+      const hourEl = document.getElementById("example-clock-hour");
+      const minuteEl = document.getElementById("example-clock-minute");
+      const secEl = document.getElementById("example-clock-second");
+
+      const yearTextEl = document.getElementById("example-clock-time-year");
+      const monthTextEl = document.getElementById("example-clock-time-month");
+      const dateTextEl = document.getElementById("example-clock-time-date");
+      const dayTextEl = document.getElementById("example-clock-time-day");
+      const hourTextEl = document.getElementById("example-clock-time-hour");
+      const minuteTextEl = document.getElementById("example-clock-time-minute");
+      const secTextEl = document.getElementById("example-clock-time-second");
+
+      const setTimebtn1 = document.getElementById("setTime1");
+      const setTimebtn2 = document.getElementById("setTime2");
+      const storeTime1 = [];
+      const storeTime2 = [];
+
+      setTimebtn1.onclick = () => {
+        const h = document.getElementById("numberH").value;
+        const m = document.getElementById("numberM").value;
+        const s = document.getElementById("numberS").value;
+        // 抓取輸入的時分秒(版本一)
+
+        // const time1 = [];
+        // time1.push([h, m, s]);
+        // console.log(time1);
+        // 檢查
+
+        storeTime1.push([h, m, s]);
+        // 將時間結果儲存到陣列(版本一)
+        // console.log(storeTime);
+        // 檢查
+
+        setTimeDisplay.innerHTML += ` <li> ${h}時 ${m}分 ${s}秒 <br></li> `;
+        // 將時間顯示在網頁上(版本一)
+      };
+      setTimebtn2.onclick = () => {
+        const time = document.getElementById("timeT").value;
+        // 抓取輸入的時分(版本二)
+
+        const hour = time.substr(0, 2);
+        const minute = time.substr(3, 2);
+        // 將時間格式OO:XX分別儲存小時跟分鐘
+        // console.log(` ${hour}時 ${minute}分 `);
+        // 檢查
+
+        storeTime2.push([hour, minute]);
+        // 將時間結果儲存到陣列(版本二)
+        // console.log(storeTime);
+        // 檢查
+
+        setTimeDisplay.innerHTML += ` <li> ${time} <br></li> `;
+        // 將時間顯示在網頁上(版本二)
+      };
+
+      const checkTime = () => {
+        const d = new Date();
+        const h = d.getHours();
+        const m = d.getMinutes();
+        const s = d.getSeconds();
+        // 讀取當前時間
+        for (let i = 0; i < storeTime1.length; i++) {
+          // console.log(h, m, s);
+          // console.log(storeTime1[i][0], storeTime1[i][1], storeTime1[i][2]);
+          // 檢查
+          if (
+            storeTime1[i][0] == h &&
+            storeTime1[i][1] == m &&
+            storeTime1[i][2] == s
+
+            // 如果設定的時間(時分秒)跟當前時間(時分秒)一樣
+            // 版本一number
+          ) {
+            console.log("設定的時間到");
+            // alert("設定的時間到");
+          }
+        }
+
+        for (let i = 0; i < storeTime2.length; i++) {
+          // console.log(storeTime2[i][0], storeTime2[i][1]);
+          // 檢查
+          if (
+            storeTime2[i][0] == h &&
+            storeTime2[i][1] == m
+            // 如果設定的時間(時分)跟當前時間(時分)一樣
+            // 版本二time
+          ) {
+            console.log("設定的時間到");
+            // alert("設定的時間到");
+          }
+        }
+      };
+
+      const setDate = () => {
+        const d = new Date();
+        const year = d.getFullYear();
+        // const year = 5;
+        const month = d.getMonth();
+        // const month = 0;
+        const date = d.getDate();
+        // const date = 0;
+        let day = d.getDay();
+        // let day = 0;
+        switch (day) {
+          case 0:
+            day = "日";
+            break;
+          case 1:
+            day = "一";
+            break;
+          case 2:
+            day = "二";
+            break;
+          case 3:
+            day = "三";
+            break;
+          case 4:
+            day = "四";
+            break;
+          case 5:
+            day = "五";
+            break;
+          case 6:
+            day = "六";
+            break;
+        }
+        // 改中文
+        const h = d.getHours();
+        // const h = 0;
+        const m = d.getMinutes();
+        // const m = 0;
+        const s = d.getSeconds();
+        // const s = 0;
+        hourEl.style.transform = `rotate( ${h * 30 + (m * 6) / 12 + 90}deg )`;
+        minuteEl.style.transform = `rotate( ${m * 6 + 90}deg )`;
+        secEl.style.transform = `rotate( ${s * 6 + 90}deg )`;
+        // 程式指針0deg從二維180°順時鐘開始(時鐘指針90deg從二維90°順時鐘開始)
+        // 時鐘時針一小時30°，分針一分鐘6°，時針分針會互動，時針會跑分針的1/12，
+
+        yearTextEl.innerText = year.toString().padStart(4, "0");
+        monthTextEl.innerText = (month + 1).toString().padStart(2, "0");
+        dateTextEl.innerText = date.toString().padStart(2, "0");
+        dayTextEl.innerText = day.toString().padStart(1, "0");
+        hourTextEl.innerText = h.toString().padStart(2, "0");
+        minuteTextEl.innerText = m.toString().padStart(2, "0");
+        secTextEl.innerText = s.toString().padStart(2, "0");
+        // 把下面的數字時鐘，如果數字只有一個，數字就補0
+        // console.log(day);
+      };
+
+      // console.log();
+      setInterval(setDate, 1000);
+      setInterval(checkTime, 1000);
+      setDate();
+    </script>
+  </body>
+</html>
